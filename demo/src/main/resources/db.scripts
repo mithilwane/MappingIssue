@@ -1,0 +1,130 @@
+-- Table: public.jdta_item_multi_attrs
+
+-- DROP TABLE public.jdta_item_multi_attrs;
+
+CREATE TABLE public.jdta_item_multi_attrs
+(
+    attr_data_value_id bigint NOT NULL,
+    jdta_item_id bigint NOT NULL,
+    attr_data_type_id numeric(19,2),
+    CONSTRAINT jdta_item_multi_attrs_pkey PRIMARY KEY (attr_data_value_id, jdta_item_id)
+        INCLUDE(attr_data_value_id, jdta_item_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.jdta_item_multi_attrs
+    OWNER to postgres;
+    
+    
+    
+-- Table: public.attr_data_resources
+
+-- DROP TABLE public.attr_data_resources;
+
+CREATE TABLE public.attr_data_resources
+(
+    attr_data_resource_type_id numeric(19,2),
+    attr_data_value_id bigint NOT NULL,
+    part_number character varying(255) COLLATE pg_catalog."default",
+    src character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT fk_attr_data_res FOREIGN KEY (attr_data_value_id)
+        REFERENCES public.attr_data_values (attr_data_value_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.attr_data_resources
+    OWNER to postgres;
+    
+    
+    
+    
+-- Table: public.attr_data_ksatrs
+
+-- DROP TABLE public.attr_data_ksatrs;
+
+CREATE TABLE public.attr_data_ksatrs
+(
+    attr_data_value_id bigint NOT NULL,
+    ksatr_type_id numeric(19,2),
+    CONSTRAINT attr_data_ksatrs_pk PRIMARY KEY (attr_data_value_id)
+        INCLUDE(attr_data_value_id),
+    CONSTRAINT attr_data_ksatrs_fk FOREIGN KEY (attr_data_value_id)
+        REFERENCES public.attr_data_values (attr_data_value_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.attr_data_ksatrs
+    OWNER to postgres;
+    
+    
+    
+-- Table: public.attr_data_types
+
+-- DROP TABLE public.attr_data_types;
+
+CREATE TABLE public.attr_data_types
+(
+    attr_data_type_id bigint NOT NULL,
+    name character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT attr_data_types_pkey PRIMARY KEY (attr_data_type_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.attr_data_types
+    OWNER to postgres;
+    
+
+
+-- Table: public.attr_data_values
+
+-- DROP TABLE public.attr_data_values;
+
+CREATE TABLE public.attr_data_values
+(
+    attr_data_value_id bigint NOT NULL,
+    allow_future_update numeric(19,2),
+    cdp_val character varying(255) COLLATE pg_catalog."default",
+    date_mod date,
+    deprecated character varying(255) COLLATE pg_catalog."default",
+    external_id character varying(255) COLLATE pg_catalog."default",
+    is_lut numeric(19,2),
+    is_non_standard numeric(19,2),
+    mod_by character varying(255) COLLATE pg_catalog."default",
+    parent_id numeric(19,2),
+    ref_field character varying(255) COLLATE pg_catalog."default",
+    seq numeric(19,2),
+    val character varying(255) COLLATE pg_catalog."default",
+    weight numeric(19,2),
+    attr_data_type_id bigint,
+    CONSTRAINT attr_data_values_pkey PRIMARY KEY (attr_data_value_id),
+    CONSTRAINT fk7f4u78u4o9kqkay6xj07cs220 FOREIGN KEY (attr_data_type_id)
+        REFERENCES public.attr_data_types (attr_data_type_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.attr_data_values
+    OWNER to postgres;
+    
+    
+            
